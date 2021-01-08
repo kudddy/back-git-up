@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"git-up-back/MessageTypes"
-	"git-up-back/models"
+	"back-git-up/MessageTypes"
+	"back-git-up/models"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"

@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	u "git-up-back/utils"
+	u "back-git-up/utils"
 	"context"
 	"fmt"
 	"github.com/gorilla/mux"

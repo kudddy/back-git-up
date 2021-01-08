@@ -1,9 +1,9 @@
 package Job
 
 import (
-	"git-up-back/MessageTypes"
-	"git-up-back/models"
-	c "git-up-back/utils"
+	"back-git-up/MessageTypes"
+	"back-git-up/models"
+	c "back-git-up/utils"
 	"encoding/json"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"

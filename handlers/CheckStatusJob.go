@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"git-up-back/MessageTypes"
-	"git-up-back/models"
+	"back-git-up/MessageTypes"
+	"back-git-up/models"
 	"encoding/json"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -28,11 +28,10 @@ func CheckStatusJob(res http.ResponseWriter, req *http.Request) {
 
 	//result := models.GetJobStatusFromDb(token)
 
-
 	result, err := models.GetMC().Get(token)
-	if err != nil{
+	if err != nil {
 		status.Status = "JOB NOT START YET"
-	}else{
+	} else {
 		if !ok {
 			status.Status = string(result.Value)
 

@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"git-up-back/MessageTypes"
-	c "git-up-back/utils"
+	"back-git-up/MessageTypes"
+	c "back-git-up/utils"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"

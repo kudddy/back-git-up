@@ -1,12 +1,10 @@
 package main
 
 import (
-	"git-up-back/handlers"
+	"back-git-up/handlers"
 	"github.com/gorilla/mux"
 	"net/http"
 )
-
-//var memcacheClient *memcache.Client
 
 func main() {
 	//memcacheClient := memcache.New("127.0.0.1:11211")

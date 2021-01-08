@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"git-up-back/Job"
-	"git-up-back/MessageTypes"
-	"git-up-back/models"
+	"back-git-up/Job"
+	"back-git-up/MessageTypes"
+	"back-git-up/models"
 	"encoding/json"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
@@ -33,8 +33,6 @@ func StarJobAdd(res http.ResponseWriter, req *http.Request) {
 	id := guuid.New()
 	fmt.Println(id.String())
 	// TODO требуется запускать воркеры с статусом RUNNING  при старте приложения
-
-
 
 	if tokenStatus {
 		//запуск воркера
