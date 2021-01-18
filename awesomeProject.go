@@ -11,7 +11,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// добавляем милдварю
-	r.Use(handlers.JwtAuthentication)
+	//r.Use(handlers.JwtAuthentication)
 
 	//in := make(chan MessageTypes.Profile)
 	//
@@ -29,6 +29,10 @@ func main() {
 	//r.HandleFunc("/status/{token}", handlers.Hello(in, out))
 
 	r.HandleFunc("/{token}/jobstatusbytoken", handlers.CheckStatusJob)
+
+	//тест
+	r.HandleFunc("/checkout", handlers.CheckAuth)
+	r.HandleFunc("/exit", handlers.ExitAuth)
 
 	http.Handle("/", r)
 	http.ListenAndServe(":9000", nil)

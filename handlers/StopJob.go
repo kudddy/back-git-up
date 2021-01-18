@@ -17,6 +17,8 @@ func StopJobAdd(res http.ResponseWriter, req *http.Request) {
 
 	token := vars["token"]
 
+	memTokenStat := token + "_status"
+
 	fmt.Println(token)
 
 	//tokenStatus:=realCheck(token)
@@ -33,7 +35,7 @@ func StopJobAdd(res http.ResponseWriter, req *http.Request) {
 		workerStatus.Status = true
 		// запись команды на остановка работы воркера
 		//go Job.StartWorker(token)
-		models.GetMC().Set(&memcache.Item{Key: token, Value: []byte("FINISH")})
+		models.GetMC().Set(&memcache.Item{Key: memTokenStat, Value: []byte("FINISH")})
 		models.InsertCancelAction(token)
 
 	} else {

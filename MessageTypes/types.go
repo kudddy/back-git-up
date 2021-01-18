@@ -14,7 +14,7 @@ type CheckTokenResp struct {
 	MessageName string
 	Status      bool
 	Desc        string
-	Token string
+	Token       string
 }
 
 type StarGazers struct {
@@ -47,8 +47,17 @@ type StartJobResp struct {
 	Status      bool
 }
 
+// сообщением с статусом работы скрипта
 type CheckJobStatusResp struct {
-	MessageName string
-	Status      string
-	Token string
+	MessageName    string
+	Status         string
+	Token          string
+	CountFriendAdd int64
+}
+
+type CheckCookie struct {
+	MessageName  string
+	StatusAuth   bool
+	IsNewSession bool
+	Token        string
 }

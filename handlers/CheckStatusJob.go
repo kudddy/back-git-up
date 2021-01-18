@@ -18,17 +18,17 @@ func CheckStatusJob(res http.ResponseWriter, req *http.Request) {
 
 	token := mux.Vars(req)["token"]
 
+	memTokenStat := token + "_status"
+	// TODO нужно перенести в memcache c префиксом
 	//ok := realCheck(token)
 	ok := true
 	var status MessageTypes.CheckJobStatusResp
 
 	status.MessageName = "JOBSTATUS"
 
-	// достаем статус задач
+	status.CountFriendAdd = models.GetCountAddFriend(token)
 
-	//result := models.GetJobStatusFromDb(token)
-
-	result, err := models.GetMC().Get(token)
+	result, err := models.GetMC().Get(memTokenStat)
 	if err != nil {
 		status.Status = "JOB NOT START YET"
 	} else {

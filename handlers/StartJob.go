@@ -17,8 +17,10 @@ func StarJobAdd(res http.ResponseWriter, req *http.Request) {
 	// проверяем валидный ли токен
 
 	vars := mux.Vars(req)
-
+	// добавил префикс для разделения ключей
 	token := vars["token"]
+	// добавил префикс для разделения ключей, префикс _status - для статуса задачи
+	memTokenStat := token + "_status"
 
 	fmt.Println(token)
 
@@ -39,7 +41,7 @@ func StarJobAdd(res http.ResponseWriter, req *http.Request) {
 		fmt.Println("запуск воркера")
 		// нужна проверка не запущен ли воркер уже/узнать статус и только потом запускать
 		// пишем в memcached
-		models.GetMC().Set(&memcache.Item{Key: token, Value: []byte("RUNNING")})
+		models.GetMC().Set(&memcache.Item{Key: memTokenStat, Value: []byte("RUNNING")})
 		jobStatus := models.GetJobStatusFromDb(token)
 		if jobStatus.Status == "RUNNING" {
 			workerStatus.Status = false

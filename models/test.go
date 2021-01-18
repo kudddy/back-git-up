@@ -68,9 +68,22 @@ func InsertJobStatusAdd(token string, username string, status bool) {
 }
 
 func GetJobStatusFromDb(token string) *JobStatusController {
-	result := &JobStatusController{}
-	GetDB().Table("job_status_controllers").Order("created_at desc").Where("token = ?", token).First(result)
-	return result
+	// статус job
+	status := &JobStatusController{}
+
+	GetDB().Table("job_status_controllers").Order("created_at desc").Where("token = ?", token).First(status)
+
+	return status
+}
+
+type NResult struct {
+	Total int64 //or int ,or some else
+}
+
+func GetCountAddFriend(token string) int64 {
+	n := &NResult{}
+	GetDB().Table("job_status_adds").Select("count(distinct(user_name)) as total").Where("token=?", token).Group("token").Scan(&n)
+	return n.Total
 }
 
 func CheckActionCancelJob(token string) bool {
