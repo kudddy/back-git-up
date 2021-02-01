@@ -3,21 +3,15 @@ package handlers
 import (
 	"back-git-up/MessageTypes"
 	"back-git-up/models"
+	"back-git-up/utils"
 	"encoding/json"
 	"net/http"
-	"strings"
 )
 
 func CheckAuth(res http.ResponseWriter, req *http.Request) {
 
-	print("что за метод:")
-
-	print(req.Method)
-
-	print("\n")
-
 	res.Header().Set("Content-Type", "application/json")
-	res.Header().Set("Access-Control-Allow-Origin", "http://127.0.0.1:3000")
+	res.Header().Set("Access-Control-Allow-Origin", utils.FrontHost)
 	res.Header().Set("Access-Control-Allow-Credentials", "true")
 	res.Header().Set("Access-Control-Allow-Headers", "Cache, Accept,Content-Type,Host,Accept")
 	res.Header().Set("Access-Control-Request-Headers", "Cache, Accept,Content-Type,Host,Accept")
@@ -51,27 +45,16 @@ func CheckAuth(res http.ResponseWriter, req *http.Request) {
 			print(sessionId)
 			print("\n")
 			result, err := models.GetMC().Get(sessionId)
+			print("проверяем что приходит из кэша\n")
+			print(result.Value)
 
 			if err == nil {
 				if result != nil {
 
-					tokenStatus := string(result.Value)
-					tokenStat := strings.Split(tokenStatus, "_")
-					checkTokenStatus := tokenStat[1]
-					print("\n")
-					print("статус токена:")
-					print(checkTokenStatus)
+					status.StatusAuth = true
+					status.IsNewSession = true
+					status.Token = string(result.Value)
 
-					if checkTokenStatus == "ok" {
-						status.StatusAuth = true
-						status.IsNewSession = false
-						status.Token = tokenStat[0]
-
-					} else {
-
-						status.StatusAuth = false
-						status.IsNewSession = false
-					}
 				} else {
 					print("пустое хранилище\n")
 

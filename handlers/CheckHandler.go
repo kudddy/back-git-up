@@ -3,10 +3,12 @@ package handlers
 import (
 	"back-git-up/MessageTypes"
 	"back-git-up/models"
+	"back-git-up/utils"
 	c "back-git-up/utils"
 	"encoding/json"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
+	"github.com/golang/glog"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -45,13 +47,20 @@ func CheckToken(res http.ResponseWriter, req *http.Request) {
 	//status := MessageTypes.CheckTokenResp{MessageName: "TOKENSTATUS", Status: tokenstatus, StatusCode: 200}
 
 	res.Header().Set("Content-Type", "application/json")
-	res.Header().Set("Access-Control-Allow-Origin", "http://127.0.0.1:3000")
+	res.Header().Set("Access-Control-Allow-Origin", c.FrontHost)
 	res.Header().Set("Access-Control-Allow-Credentials", "true")
 	res.Header().Set("Access-Control-Allow-Headers", "Cache, Accept,content-type,Host,Accept")
 	res.Header().Set("Access-Control-Request-Headers", "Cache, Accept,content-type,Host,Accept")
 
 	// достаем токен
 	if req.Method == "GET" {
+		sessionn, _ := models.GetCookiesStore().Get(req, utils.SessionName)
+
+		if sessionn.IsNew {
+			glog.Info(fmt.Sprintf("сессия новая"))
+			http.Redirect(res, req, utils.FrontHost, http.StatusFound)
+			return
+		}
 		token := mux.Vars(req)["token"]
 
 		ok := realCheck(token)

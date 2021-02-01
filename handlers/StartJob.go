@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
+	"github.com/golang/glog"
 	guuid "github.com/google/uuid"
 	"github.com/gorilla/mux"
 	"net/http"
@@ -20,10 +21,12 @@ func StarJobAdd(res http.ResponseWriter, req *http.Request) {
 	// добавил префикс для разделения ключей
 	token := vars["token"]
 	// добавил префикс для разделения ключей, префикс _status - для статуса задачи
+
+	glog.Info(fmt.Sprintf("Start Job with token: %s ", token))
+
 	memTokenStat := token + "_status"
 
-	fmt.Println(token)
-
+	//TODO проверить нужно ли проверить валидность токена. Наверное нет
 	//tokenStatus:=realCheck(token)
 	tokenStatus := true
 
@@ -35,6 +38,10 @@ func StarJobAdd(res http.ResponseWriter, req *http.Request) {
 	id := guuid.New()
 	fmt.Println(id.String())
 	// TODO требуется запускать воркеры с статусом RUNNING  при старте приложения
+
+	//session, _ := models.GetCookiesStore().Get(req, sessionName)
+
+	glog.Info(fmt.Sprintf("Start Job with token: %s ", token))
 
 	if tokenStatus {
 		//запуск воркера

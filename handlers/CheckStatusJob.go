@@ -3,64 +3,65 @@ package handlers
 import (
 	"back-git-up/MessageTypes"
 	"back-git-up/models"
+	"back-git-up/utils"
 	"encoding/json"
+	"fmt"
+	"github.com/golang/glog"
 	"github.com/gorilla/mux"
 	"net/http"
 )
 
 func CheckStatusJob(res http.ResponseWriter, req *http.Request) {
-	// генерация данных для проверки
-	//tokenstatus:= false
-	//status := MessageTypes.CheckTokenResp{MessageName: "TOKENSTATUS", Status: tokenstatus, StatusCode: 200}
 
-	// достаем токен
-	// обязательно проверять авторизацию
+	if req.Method == "GET" {
+		//session, _ := models.GetCookiesStore().Get(req, utils.SessionName)
+		//
+		////if session.IsNew{
+		////	glog.Info(fmt.Sprintf("сессия новая"))
+		////	http.Redirect(res, req, utils.FrontHost, http.StatusFound)
+		////	return
+		////}
 
-	token := mux.Vars(req)["token"]
+		token := mux.Vars(req)["token"]
 
-	memTokenStat := token + "_status"
-	// TODO нужно перенести в memcache c префиксом
-	//ok := realCheck(token)
-	ok := true
-	var status MessageTypes.CheckJobStatusResp
+		glog.Info(fmt.Sprintf("Chech status job with token: %s ", token))
 
-	status.MessageName = "JOBSTATUS"
+		memTokenStat := token + "_status"
+		ok := true
+		var status MessageTypes.CheckJobStatusResp
 
-	status.CountFriendAdd = models.GetCountAddFriend(token)
+		status.MessageName = "JOBSTATUS"
 
-	result, err := models.GetMC().Get(memTokenStat)
-	if err != nil {
-		status.Status = "JOB NOT START YET"
-	} else {
-		if !ok {
-			status.Status = string(result.Value)
+		status.CountFriendAdd = models.GetCountAddFriend(token)
 
+		result, err := models.GetMC().Get(memTokenStat)
+		if err != nil {
+			status.Status = "JOB NOT START YET"
 		} else {
-			status.Status = string(result.Value)
+			if !ok {
+				status.Status = string(result.Value)
+
+			} else {
+				status.Status = string(result.Value)
+			}
 		}
-	}
-	//fmt.Printf("Тут мы проверяем результат")
-	//fmt.Printf("\n")
-	//print(len(result.Status))
-	//fmt.Printf("Закончили проверять результат")
-	//if len(result.Status) == 0 {
-	//	result.Status = "JOB NOT START YET"
-	//}
-	//if !ok {
-	//	status.Status = result.Status
-	//
-	//} else {
-	//	status.Status = result.Status
-	//}
-	status.Token = token
+		status.Token = token
 
-	js, err := json.Marshal(status)
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-	}
+		js, err := json.Marshal(status)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+		}
 
-	res.Header().Set("Content-Type", "application/json")
-	res.Header().Set("Access-Control-Allow-Origin", "*")
-	res.Write(js)
+		//res.Header().Set("Content-Type", "application/json")
+		//res.Header().Set("Access-Control-Allow-Origin", utils.FrontHost)
+		glog.Info(fmt.Sprintf("Отправляем токен: %s ", token))
+		res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Access-Control-Allow-Origin", utils.FrontHost)
+		res.Header().Set("Access-Control-Allow-Credentials", "true")
+		res.Header().Set("Access-Control-Allow-Headers", "Cache, Accept,Content-Type,Host,Accept")
+		res.Header().Set("Access-Control-Request-Headers", "Cache, Accept,Content-Type,Host,Accept")
+		res.Write(js)
+
+	}
 
 }

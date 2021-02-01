@@ -2,6 +2,9 @@ package handlers
 
 import (
 	"back-git-up/models"
+	"back-git-up/utils"
+	"fmt"
+	"github.com/golang/glog"
 	"net/http"
 )
 
@@ -14,7 +17,7 @@ func ExitAuth(res http.ResponseWriter, req *http.Request) {
 	print("\n")
 
 	res.Header().Set("Content-Type", "application/json")
-	res.Header().Set("Access-Control-Allow-Origin", "http://127.0.0.1:3000")
+	res.Header().Set("Access-Control-Allow-Origin", utils.FrontHost)
 	res.Header().Set("Access-Control-Allow-Credentials", "true")
 	res.Header().Set("Access-Control-Allow-Headers", "Cache, Accept,Content-Type,Host,Accept")
 	res.Header().Set("Access-Control-Request-Headers", "Cache, Accept,Content-Type,Host,Accept")
@@ -22,22 +25,11 @@ func ExitAuth(res http.ResponseWriter, req *http.Request) {
 	if req.Method == "GET" {
 		store := models.GetCookiesStore()
 
-		session, _ := store.Get(req, "session-name")
+		session, _ := store.Get(req, utils.SessionName)
 
-		//sessionId := session.ID
-		//print(sessionId+"\n")
-
-		//var status MessageTypes.CheckCookie
-		// новая сессия, просим клиента авторизоваться
 		models.GetMC().Delete(session.ID)
 
-		//status.MessageName = "COOCKIESTATUS"
+		glog.Info(fmt.Sprintf("client exit with sesion id: %s ", session.ID))
 
-		//js, err := json.Marshal(status)
-		//if err != nil {
-		//	http.Error(res, err.Error(), http.StatusInternalServerError)
-		//
-		//}
-		//res.Write(js)
 	}
 }

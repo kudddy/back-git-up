@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"github.com/golang/glog"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
@@ -25,6 +26,8 @@ func init() {
 
 	dbUri := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", dbHost, dbPort, username, dbName, password)
 	fmt.Println(dbUri)
+
+	glog.Info(fmt.Sprintf("----INIT POSTGRES on host %s ----", dbHost))
 
 	conn, err := gorm.Open("postgres", dbUri)
 	if err != nil {
