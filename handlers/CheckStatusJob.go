@@ -14,13 +14,6 @@ import (
 func CheckStatusJob(res http.ResponseWriter, req *http.Request) {
 
 	if req.Method == "GET" {
-		//session, _ := models.GetCookiesStore().Get(req, utils.SessionName)
-		//
-		////if session.IsNew{
-		////	glog.Info(fmt.Sprintf("сессия новая"))
-		////	http.Redirect(res, req, utils.FrontHost, http.StatusFound)
-		////	return
-		////}
 
 		token := mux.Vars(req)["token"]
 

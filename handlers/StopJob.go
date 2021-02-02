@@ -3,6 +3,7 @@ package handlers
 import (
 	"back-git-up/MessageTypes"
 	"back-git-up/models"
+	"back-git-up/utils"
 	"encoding/json"
 	"fmt"
 	"github.com/bradfitz/gomemcache/memcache"
@@ -50,6 +51,10 @@ func StopJobAdd(res http.ResponseWriter, req *http.Request) {
 	}
 
 	res.Header().Set("Content-Type", "application/json")
+	res.Header().Set("Access-Control-Allow-Origin", utils.FrontHost)
+	res.Header().Set("Access-Control-Allow-Credentials", "true")
+	res.Header().Set("Access-Control-Allow-Headers", "Cache, Accept,Content-Type,Host,Accept")
+	res.Header().Set("Access-Control-Request-Headers", "Cache, Accept,Content-Type,Host,Accept")
 	res.Write(js)
 
 }

@@ -1,7 +1,5 @@
 version: '2'
 
-
-
 services:
   db:
     image: postgres:9.6
@@ -11,3 +9,17 @@ services:
       POSTGRES_DB: db
     ports:
       - "5434:5432"
+  app:
+    build: .
+    environment:
+      db_name: db
+      db_pass: pass
+      db_user: user
+      db_type: postgres
+      db_host: docker.for.mac.host.internal
+      db_port: 5434
+      memcache_addres: 127.0.0.1:11211
+      frontend_adress: http://127.0.0.1:3000
+    ports:
+      - "8081:8081"
+

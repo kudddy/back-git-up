@@ -180,7 +180,7 @@ func New(config *Config) *mux.Router {
 }
 
 func main() {
-	const address = "localhost:8080"
+	const address = "0.0.0.0:8080"
 
 	flag.Parse()
 	flag.Lookup("logtostderr").Value.Set("true")
